@@ -146,3 +146,5 @@ cython_debug/
 
 # GitHub personal access token files (needed for GitHub CLI to work with repo init and push)
 pat.txt
+
+.space

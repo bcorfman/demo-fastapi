@@ -9,6 +9,8 @@ readme = "README.md"
 python = "^3.11"
 fastapi = {extras = ["all"], version = "^0.98.0"}
 uvicorn = {extras = ["standard"], version = "^0.22.0"}
+sqlalchemy = "^2.0.17"
+fastapi-sqla = "^2.8.2"
 
 
 [tool.poetry.group.dev.dependencies]

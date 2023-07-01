@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from core.main import app
+from main import app
 
 
 def test_returns_json():

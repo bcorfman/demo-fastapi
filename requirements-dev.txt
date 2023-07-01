@@ -1,0 +1,7 @@
+-r requirements.txt 
+ipython
+flake8
+yapf
+pytest
+pytest-cov
+pytest-asyncio

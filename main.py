@@ -5,7 +5,7 @@ app = FastAPI()
 
 
 @app.get("/highscores")
-async def high_scores():
+async def get_high_scores():
     d = deta.Deta('b0cpmpjmjfg_vRBXMcQkawWkp1aWFhdoegtT2R7yfp7j')
     db = d.Base('FastAPI_data')
     return db.fetch().items

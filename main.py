@@ -4,11 +4,6 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
 @app.get("/highscores")
 async def high_scores():
     d = deta.Deta('b0cpmpjmjfg_vRBXMcQkawWkp1aWFhdoegtT2R7yfp7j')

@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install Deta Space CLI
+        run: curl -fsSL https://deta.space/assets/space-cli.sh | sh
       - name: Install prerequisites
         run: |
           python -m pip install --upgrade pip
@@ -25,3 +27,9 @@ jobs:
         env:
           DETA_SPACE_DATA_KEY: ${{ secrets.DETA_SPACE_DATA_KEY }}
         run: pipenv run pytest
+      - name: Push working code to Deta Space
+        env:
+          DETA_SPACE_TOKEN: ${{ secrets.DETA_SPACE_TOKEN }}
+        run: |
+          space login --with-token < $DETA_SPACE_TOKEN
+          space push

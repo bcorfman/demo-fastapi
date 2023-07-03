@@ -1,4 +1,4 @@
-# demo-fastapi
+# highscore-micro-one
 A FastAPI ASGI microservice to query a high score list.
 
 Backend is a NoSQL database deployed on Deta Space.

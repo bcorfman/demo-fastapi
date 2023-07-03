@@ -1,19 +1,21 @@
 import deta
 from fastapi import FastAPI
 
+from util.secrets import DATA_KEY
+
 app = FastAPI()
 
 
 @app.get("/highscores")
 async def get_high_scores():
-    d = deta.Deta('b0cpmpjmjfg_vRBXMcQkawWkp1aWFhdoegtT2R7yfp7j')
+    d = deta.Deta(DATA_KEY)
     db = d.Base('FastAPI_data')
     return db.fetch().items
 
 
 @app.put("/addscore")
 async def add_score_to_list(initials: str, score: int):
-    d = deta.Deta('b0cpmpjmjfg_vRBXMcQkawWkp1aWFhdoegtT2R7yfp7j')
+    d = deta.Deta(DATA_KEY)
     db = d.Base('FastAPI_data')
     items = db.fetch().items
     high_scores = []
@@ -29,7 +31,7 @@ async def add_score_to_list(initials: str, score: int):
 
 @app.put("/clear")
 async def clear_high_score_list():
-    d = deta.Deta('b0cpmpjmjfg_vRBXMcQkawWkp1aWFhdoegtT2R7yfp7j')
+    d = deta.Deta(DATA_KEY)
     db = d.Base('FastAPI_data')
     for item in db.fetch().items:
         db.delete(item['key'])

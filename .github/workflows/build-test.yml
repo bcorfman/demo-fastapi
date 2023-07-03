@@ -31,5 +31,5 @@ jobs:
         env:
           DETA_SPACE_TOKEN: ${{ secrets.DETA_SPACE_TOKEN }}
         run: |
-          space login --with-token < $DETA_SPACE_TOKEN
+          space login --with-token < $(DETA_SPACE_TOKEN)
           space push

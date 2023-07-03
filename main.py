@@ -15,13 +15,13 @@ async def get_high_scores():
 
 @app.put("/addscore")
 async def add_score_to_list(initials: str, score: int):
-    """ Add a new score with initials to a list of high scores, 
+    """ Add a new score with initials to a list of high scores,
     sort the list in descending order, and keep only the top 10
     scores in the database.
     Inputs:
     - initials: a string representing the initials of the player who achieved the score.
     - score: an integer representing the score achieved by the player. """
-    if len(initials) > 0 and score >= 0: 
+    if len(initials) > 0 and score >= 0:
         d = deta.Deta(DATA_KEY)
         db = d.Base('FastAPI_data')
         items = db.fetch().items

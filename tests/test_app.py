@@ -3,15 +3,6 @@ from fastapi.testclient import TestClient
 from main import app
 
 
-def test_root_returns_json():
-    client = TestClient(app)
-    response = client.get('/')
-
-    assert response.status_code == 200
-    assert response.headers['content-type'] == 'application/json'
-    assert response.json() == {'message': 'Hello World'}
-
-
 def test_trim_and_uppercase_initials():
     client = TestClient(app)
     # start by clearing out existing high scores

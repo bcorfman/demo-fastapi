@@ -1,8 +1,0 @@
--r requirements.txt 
-httpx
-ipython
-flake8
-yapf
-pytest
-pytest-cov
-pytest-asyncio

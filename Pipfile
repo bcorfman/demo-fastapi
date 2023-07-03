@@ -8,17 +8,8 @@ fastapi = "*"
 deta = "*"
 uvicorn = {version = "*", extras = ["standard"]}
 httpx = "*"
-ipython = "*"
-flake8 = "*"
-yapf = "*"
-pytest = "*"
-pytest-cov = "*"
-pytest-asyncio = "*"
 
 [dev-packages]
-fastapi = "*"
-uvicorn = {version = "*", extras = ["standard"]}
-deta = "*"
 ipython = "*"
 flake8 = "*"
 yapf = "*"

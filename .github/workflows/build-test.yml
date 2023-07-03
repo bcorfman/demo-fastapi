@@ -22,4 +22,6 @@ jobs:
         run: |
           pipenv install --dev
       - name: Test with pytest
+        env:
+          DETA_SPACE_DATA_KEY: ${{ secrets.DETA_SPACE_DATA_KEY }}
         run: pipenv run pytest

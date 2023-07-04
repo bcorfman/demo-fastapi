@@ -32,5 +32,5 @@ jobs:
         env:
           DETA_SPACE_TOKEN: ${{ secrets.DETA_SPACE_TOKEN }}
         run: |
-          $HOME/.detaspace/bin/space login --with_token <<<"$DETA_SPACE_TOKEN"
+          $HOME/.detaspace/bin/space login -t <<<"$DETA_SPACE_TOKEN"
           $HOME/.detaspace/bin/space push

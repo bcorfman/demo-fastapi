@@ -14,10 +14,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Deta Space CLI
-        run: |
-          curl -fsSL https://deta.space/assets/space-cli.sh | sh
-          export PATH="~/.detaspace/bin:$PATH"
       - name: Install prerequisites
         run: |
           python -m pip install --upgrade pip
@@ -30,8 +26,7 @@ jobs:
           DETA_SPACE_DATA_KEY: ${{ secrets.DETA_SPACE_DATA_KEY }}
         run: pipenv run pytest
       - name: Push working code to Deta Space
-        env:
-          DETA_SPACE_TOKEN: ${{ secrets.DETA_SPACE_TOKEN }}
-        run: |
-          ${{ github.workspace }}/.detaspace/bin/space login --with_token <<<"$DETA_SPACE_TOKEN"
-          ${{ github.workspace }}/.detaspace/bin/space push
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          deta-access-token: ${{ secrets.DETA_SPACE_TOKEN }} #Deta access token https://docs.deta.sh/docs/cli/auth
+          deta-name: "demo-fastapi" #Deta Micro name https://docs.deta.sh/docs/cli/commands/#deta-clone

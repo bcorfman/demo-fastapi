@@ -10,5 +10,5 @@ I'm using this project to practice simple microservice design with Python.
 * Install [Pipenv](https://pipenv.pypa.io/en/latest/)
 * At a command prompt in the project directory, type `pipenv install` to set up project-level dependencies only, or `pipenv install --dev` to include dev dependencies as well
 
-# Try out the web service
+# Try out the live web service
 It's hosted [on Deta Space](https://demofastapi-1-e9928521.deta.app/docs).

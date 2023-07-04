@@ -32,7 +32,6 @@ jobs:
       - name: Push working code to Deta Space
         env:
           DETA_SPACE_TOKEN: ${{ secrets.DETA_SPACE_TOKEN }}
-          PATH: ${{ github.workspace }}/.detaspace/bin:$PATH
         run: |
-          space login --with_token <<<"$DETA_SPACE_TOKEN"
-          space push
+          ${{ github.workspace }}/.detaspace/bin/space login --with_token <<<"$DETA_SPACE_TOKEN"
+          ${{ github.workspace }}/.detaspace/bin/space push

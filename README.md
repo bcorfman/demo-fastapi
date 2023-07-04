@@ -7,7 +7,7 @@ I'm using this project to practice basic web service techniques with Python.
 
 # Prerequisites
 * Install [Python](https://www.python.org) 3.9 or higher
-* Install [Pipenv]([https://python-poetry.org](https://pipenv.pypa.io/en/latest/))
+* Install [Pipenv](https://pipenv.pypa.io/en/latest/)
 * At a command prompt in the project directory, type `pipenv install` to set up project-level dependencies only, or `pipenv install --dev` to include dev dependencies as well
 
 # Try out the web service

@@ -3,7 +3,7 @@ A FastAPI ASGI microservice to query a high score list.
 
 Backend is a NoSQL database deployed on Deta Space. (Cloud deployment shown via [GitHub Actions](https://github.com/bcorfman/highscore-micro-one/blob/main/.github/workflows/test-deploy.yml).)
 
-I'm using this project to practice basic web service techniques with Python.
+I'm using this project to practice simple microservice design with Python.
 
 # Prerequisites
 * Install [Python](https://www.python.org) 3.9 or higher

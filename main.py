@@ -21,9 +21,9 @@ async def add_score_to_list(initials: str, score: int):
     Inputs:
     - initials: a string representing the initials of the player who achieved the score.
     - score: an integer representing the score achieved by the player. """
+    d = deta.Deta(DATA_KEY)
+    db = d.Base('FastAPI_data')
     if len(initials) > 0 and score >= 0:
-        d = deta.Deta(DATA_KEY)
-        db = d.Base('FastAPI_data')
         items = db.fetch().items
         high_scores = []
         if items:

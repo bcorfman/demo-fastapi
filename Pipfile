@@ -9,6 +9,7 @@ deta = "*"
 uvicorn = {version = "*", extras = ["standard"]}
 httpx = "*"
 authlib = "*"
+itsdangerous = "*"
 
 [dev-packages]
 ipython = "*"

@@ -8,6 +8,7 @@ fastapi = "*"
 deta = "*"
 uvicorn = {version = "*", extras = ["standard"]}
 httpx = "*"
+authlib = "*"
 
 [dev-packages]
 ipython = "*"

@@ -1,9 +1,59 @@
 import deta
+import json
 from fastapi import FastAPI
+from starlette.config import Config
+from starlette.requests import Request
+from starlette.middleware.sessions import SessionMiddleware
+from starlette.responses import HTMLResponse, RedirectResponse
+from authlib.integrations.starlette_client import OAuth, OAuthError
 
 from util.secrets import DATA_KEY
 
 app = FastAPI()
+app.add_middleware(SessionMiddleware, secret_key="!secret")
+
+config = Config('.env')
+oauth = OAuth(config)
+
+CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+oauth.register(name='google',
+               server_metadata_url=CONF_URL,
+               client_kwargs={'scope': 'openid email profile'})
+
+
+@app.get('/')
+async def homepage(request: Request):
+    user = request.session.get('user')
+    if user:
+        data = json.dumps(user)
+        html = (f'<pre>{data}</pre>'
+                '<a href="/logout">logout</a>')
+        return HTMLResponse(html)
+    return HTMLResponse('<a href="/login">login</a>')
+
+
+@app.get('/login')
+async def login(request: Request):
+    redirect_uri = request.url_for('auth')
+    return await oauth.google.authorize_redirect(request, redirect_uri)
+
+
+@app.get('/auth')
+async def auth(request: Request):
+    try:
+        token = await oauth.google.authorize_access_token(request)
+    except OAuthError as error:
+        return HTMLResponse(f'<h1>{error.error}</h1>')
+    user = token.get('userinfo')
+    if user:
+        request.session['user'] = dict(user)
+    return RedirectResponse(url='/')
+
+
+@app.get('/logout')
+async def logout(request: Request):
+    request.session.pop('user', None)
+    return RedirectResponse(url='/')
 
 
 @app.get("/highscores")
@@ -31,8 +81,9 @@ async def add_score_to_list(initials: str, score: int):
                 high_scores.append((item[1], item[0]))
         high_scores.append((score, initials[:3].upper()))
         high_scores.sort(reverse=True)
-        db.put({"score_list": [(item[1], item[0]) for item in high_scores[:10]]},
-               "score_list")
+        db.put(
+            {"score_list": [(item[1], item[0]) for item in high_scores[:10]]},
+            "score_list")
     return db.fetch().items
 
 

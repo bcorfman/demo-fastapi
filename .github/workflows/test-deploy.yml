@@ -38,6 +38,7 @@ jobs:
           DETA_SPACE_TOKEN: ${{ secrets.DETA_SPACE_TOKEN }}
           DETA_PROJECT_ID: ${{ secrets.DETA_PROJECT_ID }}
         run: |
+          cat $HOME/.env
           $HOME/.detaspace/bin/space login -t <<<"$DETA_SPACE_TOKEN"
           $HOME/.detaspace/bin/space link -i $DETA_PROJECT_ID
           $HOME/.detaspace/bin/space push

@@ -1,19 +1,15 @@
 import deta
-import json
+from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import FastAPI
 from starlette.config import Config
-from starlette.requests import Request
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
-from authlib.integrations.starlette_client import OAuth, OAuthError
-
-from util.secrets import DATA_KEY
 
 app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key="!secret")
-
-config = Config('.env')
-oauth = OAuth(config)
+starlette_config = Config('env.txt')
+app.add_middleware(SessionMiddleware, secret_key=starlette_config.get('SECRET_KEY'))
+oauth = OAuth(starlette_config)
 
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 oauth.register(name='google',
@@ -25,11 +21,9 @@ oauth.register(name='google',
 async def homepage(request: Request):
     user = request.session.get('user')
     if user:
-        data = json.dumps(user)
-        html = (f'<pre>{data}</pre>'
-                '<a href="/logout">logout</a>')
-        return HTMLResponse(html)
-    return HTMLResponse('<a href="/login">login</a>')
+        name = user.get('name')
+        return HTMLResponse(f'<p>Hello {name}!</p><a href=/logout>Logout</a>')
+    return HTMLResponse('<a href=/login>Login</a>')
 
 
 @app.get('/login')
@@ -58,7 +52,7 @@ async def logout(request: Request):
 
 @app.get("/highscores")
 async def get_high_scores():
-    d = deta.Deta(DATA_KEY)
+    d = deta.Deta(starlette_config.get('DETA_SPACE_DATA_KEY'))
     db = d.Base('FastAPI_data')
     return db.fetch().items
 
@@ -71,7 +65,7 @@ async def add_score_to_list(initials: str, score: int):
     Inputs:
     - initials: a string representing the initials of the player who achieved the score.
     - score: an integer representing the score achieved by the player. """
-    d = deta.Deta(DATA_KEY)
+    d = deta.Deta(starlette_config.get('DETA_SPACE_DATA_KEY'))
     db = d.Base('FastAPI_data')
     if len(initials) > 0 and score >= 0:
         items = db.fetch().items
@@ -89,7 +83,7 @@ async def add_score_to_list(initials: str, score: int):
 
 @app.put("/clear")
 async def clear_high_score_list():
-    d = deta.Deta(DATA_KEY)
+    d = deta.Deta(starlette_config.get('DETA_SPACE_DATA_KEY'))
     db = d.Base('FastAPI_data')
     for item in db.fetch().items:
         db.delete(item['key'])

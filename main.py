@@ -1,5 +1,4 @@
 import json
-from secrets import starlette_config
 
 import deta
 from authlib.integrations.starlette_client import OAuth, OAuthError
@@ -7,6 +6,8 @@ from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
+
+from util.secrets import starlette_config
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware,

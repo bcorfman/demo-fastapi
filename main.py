@@ -23,11 +23,9 @@ oauth.register(name='google',
 async def homepage(request: Request):
     user = request.session.get('user')
     if user:
-        data = json.dumps(user)
-        html = (f'<pre>{data}</pre>'
-                '<a href="/logout">logout</a>')
-        return HTMLResponse(html)
-    return HTMLResponse('<a href="/login">login</a>')
+        name = user.get('name')
+        return HTMLResponse(f'<p>Hello {name}!</p><a href=/logout>Logout</a>')
+    return HTMLResponse('<a href=/login>Login</a>')
 
 
 @app.get('/login')
@@ -42,9 +40,8 @@ async def auth(request: Request):
         token = await oauth.google.authorize_access_token(request)
     except OAuthError as error:
         return HTMLResponse(f'<h1>{error.error}</h1>')
-    user = token.get('userinfo')
-    if user:
-        request.session['user'] = dict(user)
+    user_data = await oauth.google.parse_id_token(request, token)
+    request.session['user'] = dict(user_data)
     return RedirectResponse(url='/')
 
 

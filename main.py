@@ -8,9 +8,8 @@ from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
-starlette_config = Config('.env')
-
 app = FastAPI()
+starlette_config = Config('.env')
 app.add_middleware(SessionMiddleware, secret_key=starlette_config.get('SECRET_KEY'))
 oauth = OAuth(starlette_config)
 
@@ -57,7 +56,7 @@ async def logout(request: Request):
 
 @app.get("/highscores")
 async def get_high_scores():
-    d = deta.Deta(starlette_config.get('DATA_KEY'))
+    d = deta.Deta(starlette_config.get('DETA_SPACE_DATA_KEY'))
     db = d.Base('FastAPI_data')
     return db.fetch().items
 
@@ -70,7 +69,7 @@ async def add_score_to_list(initials: str, score: int):
     Inputs:
     - initials: a string representing the initials of the player who achieved the score.
     - score: an integer representing the score achieved by the player. """
-    d = deta.Deta(starlette_config.get('DATA_KEY'))
+    d = deta.Deta(starlette_config.get('DETA_SPACE_DATA_KEY'))
     db = d.Base('FastAPI_data')
     if len(initials) > 0 and score >= 0:
         items = db.fetch().items
@@ -88,7 +87,7 @@ async def add_score_to_list(initials: str, score: int):
 
 @app.put("/clear")
 async def clear_high_score_list():
-    d = deta.Deta(starlette_config.get('DATA_KEY'))
+    d = deta.Deta(starlette_config.get('DETA_SPACE_DATA_KEY'))
     db = d.Base('FastAPI_data')
     for item in db.fetch().items:
         db.delete(item['key'])

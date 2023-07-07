@@ -39,12 +39,14 @@ async def login(request: Request):
 @app.get('/auth')
 async def auth(request: Request):
     try:
-        await oauth.google.authorize_access_token(request)
+        token = await oauth.google.authorize_access_token(request)
     except OAuthError as error:
         return HTMLResponse(f'<h1>{error.error}</h1>')
-    #user_data = await oauth.google.parse_id_token(request, token)
-    #request.session['user'] = dict(user_data)
+    user = token.get('userinfo')
+    if user:
+        request.session['user'] = dict(user)
     return RedirectResponse(url='/')
+
 
 @app.get('/logout')
 async def logout(request: Request):

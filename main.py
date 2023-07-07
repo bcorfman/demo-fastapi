@@ -1,21 +1,16 @@
 import json
+from secrets import starlette_config
 
 import deta
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import FastAPI
-from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
-from util.secrets import DATA_KEY, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
-
 app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key="!secret")
-
-config_data = {'GOOGLE_CLIENT_ID': GOOGLE_CLIENT_ID, 
-               'GOOGLE_CLIENT_SECRET': GOOGLE_CLIENT_SECRET}
-starlette_config = Config(environ=config_data)
+app.add_middleware(SessionMiddleware,
+                   secret_key=starlette_config('SECRET_KEY'))
 oauth = OAuth(starlette_config)
 
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
@@ -61,7 +56,7 @@ async def logout(request: Request):
 
 @app.get("/highscores")
 async def get_high_scores():
-    d = deta.Deta(DATA_KEY)
+    d = deta.Deta(starlette_config('DATA_KEY'))
     db = d.Base('FastAPI_data')
     return db.fetch().items
 
@@ -74,7 +69,7 @@ async def add_score_to_list(initials: str, score: int):
     Inputs:
     - initials: a string representing the initials of the player who achieved the score.
     - score: an integer representing the score achieved by the player. """
-    d = deta.Deta(DATA_KEY)
+    d = deta.Deta(starlette_config('DATA_KEY'))
     db = d.Base('FastAPI_data')
     if len(initials) > 0 and score >= 0:
         items = db.fetch().items
@@ -92,7 +87,7 @@ async def add_score_to_list(initials: str, score: int):
 
 @app.put("/clear")
 async def clear_high_score_list():
-    d = deta.Deta(DATA_KEY)
+    d = deta.Deta(starlette_config('DATA_KEY'))
     db = d.Base('FastAPI_data')
     for item in db.fetch().items:
         db.delete(item['key'])

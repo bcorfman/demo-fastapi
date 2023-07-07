@@ -148,4 +148,4 @@ cython_debug/
 pat.txt
 
 .space
-.env
+env.txt

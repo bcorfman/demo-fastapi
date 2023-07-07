@@ -9,7 +9,7 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
 app = FastAPI()
-starlette_config = Config('.env')
+starlette_config = Config('env.txt')
 app.add_middleware(SessionMiddleware, secret_key=starlette_config.get('SECRET_KEY'))
 oauth = OAuth(starlette_config)
 

@@ -10,8 +10,7 @@ from starlette.responses import HTMLResponse, RedirectResponse
 from util.secrets import starlette_config
 
 app = FastAPI()
-app.add_middleware(SessionMiddleware,
-                   secret_key=starlette_config('SECRET_KEY'))
+app.add_middleware(SessionMiddleware, secret_key='secret!')
 oauth = OAuth(starlette_config)
 
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'

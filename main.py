@@ -1,19 +1,22 @@
-import deta
 import json
+
+import deta
+from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import FastAPI
 from starlette.config import Config
-from starlette.requests import Request
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
-from authlib.integrations.starlette_client import OAuth, OAuthError
 
-from util.secrets import DATA_KEY
+from util.secrets import DATA_KEY, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="!secret")
 
-config = Config('.env')
-oauth = OAuth(config)
+config_data = {'GOOGLE_CLIENT_ID': GOOGLE_CLIENT_ID, 
+               'GOOGLE_CLIENT_SECRET': GOOGLE_CLIENT_SECRET}
+starlette_config = Config(environ=config_data)
+oauth = OAuth(starlette_config)
 
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 oauth.register(name='google',

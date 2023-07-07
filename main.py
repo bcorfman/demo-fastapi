@@ -1,5 +1,3 @@
-import json
-
 import deta
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import FastAPI
@@ -23,11 +21,9 @@ oauth.register(name='google',
 async def homepage(request: Request):
     user = request.session.get('user')
     if user:
-        data = json.dumps(user)
-        html = (f'<pre>{data}</pre>'
-                '<a href="/logout">logout</a>')
-        return HTMLResponse(html)
-    return HTMLResponse('<a href="/login">login</a>')
+        name = user.get('name')
+        return HTMLResponse(f'<p>Hello {name}!</p><a href=/logout>Logout</a>')
+    return HTMLResponse('<a href=/login>Login</a>')
 
 
 @app.get('/login')
